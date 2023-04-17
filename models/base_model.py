@@ -21,10 +21,9 @@ class BaseModel:
                                             updated_at.
     """
 
-    if storage_type == 'db':
-        id = Column(String(60), nullable=False, primary_key=True)
-        created_at = Column(DATETIME, nullable=False, default=datetime.utcnow)
-        updated_at = Column(DATETIME, nullable=False, default=datetime.utcnow)
+    id = Column(String(60), nullable=False, primary_key=True)
+    created_at = Column(DATETIME, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DATETIME, nullable=False, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -45,10 +44,10 @@ class BaseModel:
                 if key != '__class__':
                     setattr(self, key, value)
 
-
     def __str__(self):
         """Returns a string representation of the instance"""
-        return '[{}] ({}) {}'.format(self.__class__.__name__, self.id, self.__dict__)
+        return '[{}] ({}) {}'.format(
+            self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -66,7 +65,7 @@ class BaseModel:
         if '_sa_instance_state' in new_dict:
             del new_dict['_sa_instance_state']
         return new_dict
-    
+
     def delete(self):
         """Delete the current instance from the storage"""
         from models import storage
