@@ -3,6 +3,7 @@
     tests for FileStorage
 """
 import unittest
+from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
 
@@ -32,7 +33,6 @@ class test_FileStorage(unittest.TestCase):
         self.assertTrue(isinstance(self.dummy._FileStorage__objects, dict))
         self.assertTrue(hasattr(self.dummy, "_FileStorage__file_path"))
         self.assertTrue(isinstance(self.dummy._FileStorage__file_path, str))
-
 
 if __name__ == "__main__":
     unittest.main()

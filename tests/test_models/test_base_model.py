@@ -4,6 +4,7 @@
 """
 import unittest
 from datetime import datetime
+import time
 import re
 import os
 from models.base_model import BaseModel
@@ -24,7 +25,7 @@ class Test_BaseModel(unittest.TestCase):
         del cls.dummy
         try:
             os.remove("file.json")
-        except FileNotFoundError:
+        except:
             pass
 
     def test_id(self):
@@ -101,4 +102,4 @@ class Test_BaseModel(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+        unittest.main()

@@ -3,6 +3,7 @@
     tests for FileStorage
 """
 import unittest
+from models.base_model import BaseModel
 from models.engine.db_storage import DBStorage
 from sqlalchemy.engine.base import Engine
 
@@ -33,7 +34,6 @@ class test_DBStorage(unittest.TestCase):
         self.assertTrue(hasattr(self.dummy, '_DBStorage__session'))
         self.assertTrue(isinstance(self.dummy._DBStorage__engine, Engine))
         self.assertTrue(self.dummy._DBStorage__session is None)
-
 
 if __name__ == "__main__":
     unittest.main()

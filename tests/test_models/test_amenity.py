@@ -41,6 +41,5 @@ class test_Amenity(unittest.TestCase):
         """
         self.assertTrue(hasattr(self.dummy_amenity, "name"))
 
-
 if __name__ == "__main__":
     unittest.main()

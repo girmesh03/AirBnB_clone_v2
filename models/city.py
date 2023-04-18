@@ -1,29 +1,27 @@
 #!/usr/bin/python3
 """
-City Module for HBNB project
-Defines the City class that inherits from BaseModel
+    contains City class to represent a city
+    contains City class to represent a city
 """
 
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
+from models.state import State
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, ForeignKey
+from os import environ
+
+storage_engine = environ.get("HBNB_TYPE_STORAGE")
 
 
-class City(BaseModel):
-    """
-    Represents a city.
+class City(BaseModel, Base):
+    """ City class :City class to represent a city
+    City class :City class to represent a city"""
 
-    Attributes:
-        state_id (str): the ID of the state where the city is located
-        name (str): the name of the city
-    """
-
-    def __init__(self, *args, **kwargs):
-        """
-        Instantiates a new City object.
-
-        Args:
-            args: Variable length argument list.
-            kwargs: Arbitrary keyword arguments.
-        """
-        super().__init__(*args, **kwargs)
-        self.state_id = kwargs.get("state_id", "")
-        self.name = kwargs.get("name", "")
+    if (storage_engine == "db"):
+        __tablename__ = "cities"
+        state_id = Column(String(60), ForeignKey(State.id))
+        name = Column(String(128), nullable=False)
+        places = relationship("Place", backref="cities")
+    else:
+        name = ""
+        state_id = ""
