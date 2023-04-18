@@ -145,3 +145,7 @@ class TestHBNBCommand(unittest.TestCase):
             cons.onecmd('count State')
             cursor.close()
             dbc.close()
+
+
+if __name__ == '__main__':
+    unittest.main()
