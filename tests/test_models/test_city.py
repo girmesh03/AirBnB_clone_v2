@@ -1,48 +1,42 @@
 #!/usr/bin/python3
 """
-    test city
+Defines the unittests for models/city.py
 """
+
+import os
 from models.city import City
-from models.state import State
-from models.base_model import BaseModel
-import unittest
+from tests.test_models.test_base_model import TestBasemodel
 
 
-class test_City(unittest.TestCase):
+class TestCity(TestBasemodel):
     """
-        test for city class
+    A unittest for City class
     """
-    @classmethod
-    def setUpClass(cls):
-        """
-            setup
-        """
-        cls.dummy_city = City()
-        cls.dummy_city.name = "test"
-        cls.dummy_city.state_id = State().id
 
-    @classmethod
-    def tearDownClass(cls):
+    def __init__(self, *args, **kwargs):
         """
-            tear down
+        Initializes the test class for City
         """
-        del cls.dummy_city
+        super().__init__(*args, **kwargs)
+        self.name = "City"
+        self.value = City
 
-    def test_inheritance(self):
+    def test_state_id(self):
         """
-            test proper inheritance
+        Tests the type of state_id attribute
         """
-        self.assertIsInstance(self.dummy_city, BaseModel)
-        self.assertTrue(hasattr(self.dummy_city, "id"))
-        self.assertTrue(hasattr(self.dummy_city, "created_at"))
-        self.assertTrue(hasattr(self.dummy_city, "updated_at"))
+        new = self.value()
+        self.assertEqual(
+            type(new.state_id),
+            str if os.getenv('HBNB_TYPE_STORAGE') != 'db' else type(None)
+        )
 
-    def test_attrs(self):
+    def test_name(self):
         """
-            test attributes
+        Tests the type of name attribute
         """
-        self.assertTrue(hasattr(self.dummy_city, "name"))
-        self.assertTrue(hasattr(self.dummy_city, "state_id"))
-
-if __name__ == "__main__":
-    unittest.main()
+        new = self.value()
+        self.assertEqual(
+            type(new.name),
+            str if os.getenv('HBNB_TYPE_STORAGE') != 'db' else type(None)
+        )
