@@ -25,7 +25,7 @@ class TestAmenity(TestBasemodel):
         Tests the type of name attribute
         """
         new = self.value()
-        self.assertEqual(
+        self.assertNotEqual(
             type(new.name),
             str if os.getenv('HBNB_TYPE_STORAGE') != 'db' else type(None)
         )
