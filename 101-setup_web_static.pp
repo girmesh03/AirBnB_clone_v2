@@ -21,7 +21,7 @@ file { $directories:
 # Create a fake HTML file for testing
 file { '/data/web_static/releases/test/index.html':
   ensure  => present,
-  content => '<html><body>Test</body></html>',
+  content => 'A fake HTML file for testing',
 }
 
 # Create symbolic link to current release
@@ -31,47 +31,22 @@ file { '/data/web_static/current':
 }
 
 # Change ownership of the /data/ folder to the ubuntu user AND group
-exec { 'chown':
-  command => 'chown -R ubuntu:ubuntu /data/',
+exec { 'chown -R ubuntu:ubuntu /data/':
+  path => '/usr/bin/:/usr/local/bin/:/bin/'
 }
 
 # Configure Nginx
-file { '/etc/nginx/sites-available/default':
-  content => "
-server {
-
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    root   /var/www/html;
-    index  index.html index.htm;
-
-    location /hbnb_static {
-        alias /data/web_static/current;
-        index index.html index.htm;
-    }
-
-    location /redirect_me {
-        return 301 https://www.facebook.com;
-    }
-
-    error_page 404 /404.html;
-
-    location /404 {
-      root /var/www/html;
-      internal;
-    }
+file_line {'deploy_static':
+  path  => '/etc/nginx/sites-available/default',
+  after => 'server_name _;',
+  line  => "\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}",
 }
-",
-  notify  => Service['nginx'],
+
+# ensure nginx is running
+service {'nginx':
+  ensure  => running,
 }
 
 # Restart Nginx after updating the configuration
-service { 'nginx':
-  ensure  => 'running',
-  enable  => true,
-  require => File['/etc/nginx/sites-available/default'],
-}
-
 exec {'/etc/init.d/nginx restart':
 }
