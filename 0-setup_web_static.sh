@@ -1,27 +1,53 @@
 #!/usr/bin/env bash
-# ABash script that sets up your web servers for the deployment of web_static.
+# Prepare Web Server for deployment of web_static
 
-sudo apt-get update -y
-sudo apt-get install nginx -y
+apt-get update
+apt-get install -y nginx
 
-# create directories
-sudo mkdir -p /data/web_static/releases/test/
-sudo mkdir /data/web_static/shared/
+mkdir -p /data/web_static/releases/test/
+mkdir -p /data/web_static/shared/
 
-# Create a fake HTML file
-echo "Alx School" > /data/web_static/releases/test/index.html
+echo "
+<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>
+" > /data/web_static/releases/test/index.html
 
-# if file called current exists, delete it
-sudo rm -rf /data/web_static/current
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
-# Create a symbolic link
-sudo ln -s /data/web_static/releases/test/ /data/web_static/current
+chown -R ubuntu:ubuntu /data/
 
-# Give ownership of the /data/ folder to the ubuntu user AND group
-sudo chown -R ubuntu:ubuntu /data/
+printf %s "server {
 
-# Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static
-sudo sed -i "16i\ \n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}" /etc/nginx/sites-available/default
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
-# restart nginx
-sudo service nginx restart
+    add_header X-Served-By $HOSTNAME;
+
+    root   /var/www/html;
+    index  index.html index.htm;
+
+    location /hbnb_static {
+        alias /data/web_static/current;
+        index index.html index.htm;
+    }
+
+    location /redirect_me {
+        return 301 https://www.facebook.com;
+    }
+
+    error_page 404 /404.html;
+
+    location /404 {
+      root /var/www/html;
+      internal;
+    }
+
+}" > /etc/nginx/sites-available/default
+
+# Restart nginx
+service nginx restart
