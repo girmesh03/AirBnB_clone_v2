@@ -6,7 +6,7 @@ sudo apt-get install nginx -y
 
 # create directories
 sudo mkdir -p /data/web_static/releases/test/
-sudo mkdir -p /data/web_static/shared/
+sudo mkdir /data/web_static/shared/
 
 # Create a fake HTML file
 echo "Alx School" > /data/web_static/releases/test/index.html
