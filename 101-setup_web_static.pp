@@ -3,29 +3,36 @@ package { 'nginx':
   ensure => installed,
 }
 
+# deploy static
+$directories = [ '/data/', '/data/web_static/',
+                        '/data/web_static/releases/', '/data/web_static/shared/',
+                        '/data/web_static/releases/test/'
+                  ]
+
 # Create required directories
-file { ['/data', '/data/web_static', '/data/web_static/releases', '/data/web_static/shared', '/data/web_static/releases/test']:
-  ensure => directory,
+file { $directories:
+  ensure  => 'directory',
+  owner   => 'ubuntu',
+  group   => 'ubuntu',
+  recurse => 'remote',
+  mode    => '0777',
 }
 
 # Create a fake HTML file for testing
 file { '/data/web_static/releases/test/index.html':
+  ensure  => present,
   content => '<html><body>Test</body></html>',
 }
 
 # Create symbolic link to current release
 file { '/data/web_static/current':
-  ensure  => 'link',
-  target  => '/data/web_static/releases/test',
-  require => File['/data/web_static/releases/test'],
-  before  => Service['nginx'],
+  ensure => link,
+  target => '/data/web_static/releases/test/',
 }
 
-# Give ownership to the ubuntu user and group
-file { '/data':
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  recurse => true,
+# Change ownership of the /data/ folder to the ubuntu user AND group
+exec { 'chown':
+  command => 'chown -R ubuntu:ubuntu /data/',
 }
 
 # Configure Nginx
@@ -64,4 +71,7 @@ service { 'nginx':
   ensure  => 'running',
   enable  => true,
   require => File['/etc/nginx/sites-available/default'],
+}
+
+exec {'/etc/init.d/nginx restart':
 }
