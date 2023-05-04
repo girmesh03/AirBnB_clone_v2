@@ -1,41 +1,27 @@
 #!/usr/bin/env bash
-# Prepare Web Server for deployment of web_static
+# ABash script that sets up your web servers for the deployment of web_static.
 
-apt-get update
-apt-get install -y nginx
+sudo apt-get update -y
+sudo apt-get install nginx -y
 
-mkdir -p /data/web_static/releases/test/
-mkdir -p /data/web_static/shared/
-echo "<html>
-  <head>
-  </head>
-  <body>
-    Holberton School
-  </body>
-</html>" > /data/web_static/releases/test/index.html
-ln -sf /data/web_static/releases/test/ /data/web_static/current
+# create directories
+sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared/
 
-chown -R ubuntu /data/
-chgrp -R ubuntu /data/
+# Create a fake HTML file
+echo "Alx School" > /data/web_static/releases/test/index.html
 
-printf %s "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    add_header X-Served-By $HOSTNAME;
-    root   /var/www/html;
-    index  index.html index.htm;
-    location /hbnb_static {
-        alias /data/web_static/current;
-        index index.html index.htm;
-    }
-    location /redirect_me {
-        return 301 https://github.com/Hagos2022;
-    }
-    error_page 404 /404.html;
-    location /404 {
-      root /var/www/html;
-      internal;
-    }
-}" > /etc/nginx/sites-available/default
+# if file called current exists, delete it
+sudo rm -rf /data/web_static/current
 
-service nginx restart
+# Create a symbolic link
+sudo ln -s /data/web_static/releases/test/ /data/web_static/current
+
+# Give ownership of the /data/ folder to the ubuntu user AND group
+sudo chown -R ubuntu:ubuntu /data/
+
+# Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static
+sudo sed -i "16i\ \n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}" /etc/nginx/sites-available/default
+
+# restart nginx
+sudo service nginx restart
