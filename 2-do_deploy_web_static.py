@@ -7,7 +7,7 @@ from os.path import exists
 import re
 
 
-env.hosts = ['100.25.167.139', '54.172.232.30']
+env.hosts = ['54.209.182.89', '18.207.234.15']
 
 
 def do_deploy(archive_path):
