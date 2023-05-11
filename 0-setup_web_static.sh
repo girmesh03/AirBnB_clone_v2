@@ -8,15 +8,16 @@ sudo rm -rf /etc/nginx/sites-available/default
 sudo rm -rf /etc/nginx/sites-enabled/default
 
 printf %s "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
+
+	listen 80 default_server;
+	listen [::]:80 default_server;
 
 	add_header X-Served-By $HOSTNAME;
 
-    root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html;
 
-    server_name _;
+	server_name _;
 
 }" > /etc/nginx/sites-available/default
 
