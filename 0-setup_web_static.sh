@@ -7,12 +7,20 @@ sudo apt-get install -y nginx
 sudo rm -rf /etc/nginx/sites-available/default
 sudo rm -rf /etc/nginx/sites-enabled/default
 
-sudo cp -r default_server_block_copy /etc/nginx/sites-available/default
-sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+printf %s "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
-echo "Hello World!" > /var/www/html/index.html
-echo "Ceci n'est pas une page" > /var/www/html/404.html
-ufw allow 'Nginx HTTP'
+	add_header X-Served-By $HOSTNAME;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+}" > /etc/nginx/sites-available/default
+
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 
 # Create a redirection
 redirect="\n\tlocation /redirect_me {\n\t\treturn 301 https://youtu.be/dQw4w9WgXcQ;\n\t}"
