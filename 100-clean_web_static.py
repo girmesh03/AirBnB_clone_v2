@@ -6,7 +6,7 @@ that deletes out-of-date archives, using the function do_clean:
 
 from fabric.api import env, local, run, cd, lcd
 
-env.hosts = ['100.25.167.139', '54.172.232.30']
+env.hosts = ['54.209.182.89', '18.207.234.15']
 env.user = 'ubuntu'
 env.key_filename = '~/.ssh/school'
 
