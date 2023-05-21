@@ -1,16 +1,15 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-import os
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-import models
-from models.base_model import BaseModel, Base
 from models.city import City
+import models
+import os
 
 
-class State(BaseModel, Base):
-    """State class inherits from BaseModel and Base"""
-
+class State(BaseModel):
+    """ State class """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
 
@@ -19,9 +18,7 @@ class State(BaseModel, Base):
     else:
         @property
         def cities(self):
-            """getter attribute cities that returns the list of City instances
-            with state_id equals to the current State.id"""
-
+            '''A getter method for cities from file storage'''
             cities = models.storage.all(City).values()
             cities_list = [city for city in cities if self.id == city.state_id]
             return cities_list

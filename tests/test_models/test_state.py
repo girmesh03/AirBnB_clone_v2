@@ -1,22 +1,19 @@
 #!/usr/bin/python3
-"""
-Defines the unittests for models/test_state.py
-"""
-
-from tests.test_models.test_base_model import TestBasemodel
+""" """
+from tests.test_models.test_base_model import test_basemodel
 from models.state import State
 
 
-class TestState(TestBasemodel):
-    """Unittests for testing the State class."""
+class test_state(test_basemodel):
+    """ """
 
     def __init__(self, *args, **kwargs):
-        """Testing initialization of State"""
+        """ """
         super().__init__(*args, **kwargs)
         self.name = "State"
         self.value = State
 
-    def test_name_attr(self):
-        """Testing State name attribute."""
+    def test_name3(self):
+        """ """
         new = self.value()
-        self.assertTrue("name" in new.__dir__())
+        self.assertEqual(type(new.name), str)
