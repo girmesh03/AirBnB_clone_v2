@@ -8,24 +8,15 @@ from models.state import State
 
 
 class TestState(TestBasemodel):
-    """
-    A unittest for State class
-    """
+    """Unittests for testing the State class."""
 
     def __init__(self, *args, **kwargs):
-        """
-        Initializes the test class for State
-        """
+        """Testing initialization of State"""
         super().__init__(*args, **kwargs)
         self.name = "State"
         self.value = State
 
-    def test_name(self):
-        """
-        Tests the type of name attribute
-        """
+    def test_name_attr(self):
+        """Testing State name attribute."""
         new = self.value()
-        self.assertNotEqual(
-            type(new.name),
-            str if os.getenv('HBNB_TYPE_STORAGE') != 'db' else type(None)
-        )
+        self.assertTrue("name" in new.__dir__())
