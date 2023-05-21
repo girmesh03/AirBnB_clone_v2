@@ -41,5 +41,6 @@ class test_State(unittest.TestCase):
         """
         self.assertTrue(hasattr(self.dummy_state, "name"))
 
+
 if __name__ == "__main__":
     unittest.main()

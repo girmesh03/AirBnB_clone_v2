@@ -3,10 +3,8 @@
     contains review class to represent reviews
 """
 from models.base_model import BaseModel, Base
-from models.place import Place
-from models.user import User
 from sqlalchemy.orm import relationship
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import Column, String
 from sqlalchemy.sql.schema import ForeignKey
 from os import environ
 

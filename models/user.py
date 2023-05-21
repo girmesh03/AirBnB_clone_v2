@@ -5,7 +5,7 @@
 """
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import Column, String
 from os import environ
 
 storage_engine = environ.get("HBNB_TYPE_STORAGE")
