@@ -2,7 +2,7 @@
 """
 Defines the unittests for models/test_state.py
 """
-import os
+
 from tests.test_models.test_base_model import TestBasemodel
 from models.state import State
 
